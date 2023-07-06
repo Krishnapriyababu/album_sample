@@ -1,22 +1,24 @@
+import 'package:album_sample/utils/Strings.dart';
 import 'package:flutter/material.dart';
-
-
+import 'package:get/get.dart';
+import '../controller/DailogController.dart';
 import 'Buttonwidget.dart';
 
 
 class CustomDialogWidget extends StatelessWidget {
   var title;
   var body;
-  var type;
+  var count;
+  final DialogController dialogController = Get.find<DialogController>();
 
-   CustomDialogWidget({Key? key,required this.title,required this.body, required this.type });
+
+  CustomDialogWidget({Key? key});
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
       backgroundColor:  Colors.transparent,
       child: Container(
-        padding: EdgeInsets.all(16),
         child:  Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -37,64 +39,42 @@ class CustomDialogWidget extends StatelessWidget {
                       children: [
                         const SizedBox(height: 10),
                         Text(
-                          title,
+                          dialogController.dialogTitle.value,
                           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 15),
-                    Text(body,
+                    Text(dialogController.dialogBody.value,
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 20),
-                        type == 'OK' ?
-                        Row(
-                    children: [
-                      Dialogbutton( action: 'OK'),
+                      //  Buttons
+                  Obx(
+                    () =>dialogController.buttonCount.value == 1 ?
+                       Dialogbutton(
+                         onPressed: dialogController.closeDialog,
+                         buttonText: AppStrings.buttonok_text,
+                       )
+                      : Row(
+                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                         children: [
+                           Expanded(
+                             child: Dialogbutton(
+                               onPressed: dialogController.closeDialog,
+                               buttonText: AppStrings.buttoncancel_text,
+                             ),
+                  ),
+                           SizedBox(width: 10),
+                           Expanded(
+                             child: Dialogbutton(
+                               onPressed: dialogController.closeDialog,
+                               buttonText: AppStrings.buttonok_text,
+                             ),
+                           ),
+                         ],
 
-
-                      // Expanded(
-                      //   child:
-                      //   ElevatedButton(
-                      //     child: const Text(
-                      //       'NO',
-                      //     ),
-                      //     style: ElevatedButton.styleFrom(
-                      //       minimumSize: const Size(0, 45),
-                      //       primary: Colors.amber,
-                      //       onPrimary: const Color(0xFFFFFFFF),
-                      //       shape: RoundedRectangleBorder(
-                      //         borderRadius: BorderRadius.circular(8),
-                      //       ),
-                      //     ),
-                      //     onPressed: () {},
-                      //   ),
-                      // ),
-                      // Expanded(
-                      //   child: ElevatedButton(
-                      //     child: const Text(
-                      //       'YES',
-                      //     ),
-                      //     style: ElevatedButton.styleFrom(
-                      //       minimumSize: const Size(0, 45),
-                      //       primary: Colors.amber,
-                      //       onPrimary: const Color(0xFFFFFFFF),
-                      //       shape: RoundedRectangleBorder(
-                      //         borderRadius: BorderRadius.circular(8),
-                      //       ),
-                      //     ),
-                      //     onPressed: () {},
-                      //   ),
-                      // ),
-                    ],
-                  ) :
-
-                      Row(
-                      children: [
-                      Dialogbutton( action: 'OK'),
-                  const SizedBox(width: 10),
-                  ],
-                ),
-
-                ],
+                       ),
+                       ),
+                      ],
                     ),
                   ),
                 ),

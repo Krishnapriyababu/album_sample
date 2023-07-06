@@ -3,16 +3,20 @@ import 'package:flutter/material.dart';
 import '../utils/Toast.dart';
 
 class Dialogbutton extends StatelessWidget {
-  var action;
-   Dialogbutton({Key? key, required this.action});
+  final VoidCallback onPressed;
+  final String buttonText;
+
+  const Dialogbutton({
+    required this.onPressed,
+    required this.buttonText,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-        onPressed: () {
-      showToast('Button Clicked! ${action}');
-
-    }
-      , child:action);
+      onPressed: onPressed,
+      child: Text(buttonText),
+    );
   }
 }
+
